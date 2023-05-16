@@ -42,11 +42,6 @@ class TemplateHandler():
             return http.client.OK, templates
         except:
             return http.client.INTERNAL_SERVER_ERROR
-        
-    def get_template_by_id(self, id):
-        try: 
-            collection = self.mongodbconnector.connect_etif_db()
-            records = collection.find({_id : ObjectId(id)}) 
 
     
 

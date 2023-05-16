@@ -2,6 +2,7 @@ from injector import inject
 from flask import request, Blueprint
 from processors.template_processor import TemplateProcessor
 from common.api_response import APIResponse
+import json
 
 template_api = Blueprint("template_api", __name__)
 
@@ -10,9 +11,9 @@ template_api = Blueprint("template_api", __name__)
 def create_template(processor: TemplateProcessor, api_response: APIResponse ):
     data = {}
     data["name"] = request.form['name']
-    data["templateMetadata"] = request.form['templateMetadata']
-    data["templateMappings"] = request.form['templateMappings']
-    data["templateTableMappings"] = request.form['templateTableMappings']
+    data["templateMetadata"] = json.loads(request.form['templateMetadata'])
+    data["templateMappings"] = json.loads(request.form['templateMappings'])
+    data["templateTableMappings"] = json.loads(request.form['templateTableMappings'])
     status_code = processor.create_template(data, request.files)
     return api_response.create_response(status_code)
 

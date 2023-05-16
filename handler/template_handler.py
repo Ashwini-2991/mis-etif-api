@@ -1,5 +1,6 @@
 import http.client
 from injector import inject
+from mongomock import ObjectId
 from dbutils.mongodbconnector import MongodbConnector
 
 class TemplateHandler():
@@ -24,12 +25,14 @@ class TemplateHandler():
             templates = []
 
             for template in records:
+                _id = template['_id']
                 name = template['name']
                 template_metadata = template['templateMetadata']
                 captured_points = len(template['templateMappings'])
                 captured_tables = len(template['templateTableMappings'])
 
-                template = { 
+                template = {
+                    '_id' :  ObjectId(_id),
                     'name': name,
                     'templateMetadata' : template_metadata, 
                     'capturedPoints' : captured_points,
@@ -39,6 +42,11 @@ class TemplateHandler():
             return http.client.OK, templates
         except:
             return http.client.INTERNAL_SERVER_ERROR
+        
+    def get_template_by_id(self, id):
+        try: 
+            collection = self.mongodbconnector.connect_etif_db()
+            records = collection.find({_id : ObjectId(id)}) 
 
     
 

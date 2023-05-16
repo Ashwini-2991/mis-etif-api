@@ -2,6 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from api import process_template
 from flask_injector import FlaskInjector
+from common.jsonencoder import JSONEncoder
 from conf.dependencies import config_dependencies
 
 def create_app():
@@ -10,6 +11,7 @@ def create_app():
     CORS(app)
     register_blueprints(app)
     configure_dependencies(app)
+    app.json_encoder = JSONEncoder
     return app
 
 def register_blueprints(app):
